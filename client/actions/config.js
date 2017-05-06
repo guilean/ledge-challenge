@@ -63,7 +63,6 @@ function showError() {
 }
 
 export function phone_verification(params, callback) {
-    debugger;
     return (dispatch, getState) =>{
         dispatch(showLoading());
         API.prototype.phone_verification(params,
@@ -78,15 +77,21 @@ export function phone_verification(params, callback) {
     };
 }
 
+// Valido móvil
+// Envío el correo de las credenciales alternativas
+// Muestro pantalla de... Se te ha enviado un correo, validalo y haz clic aquí para loguearte
+// En ese caso comprobamos la llamada del status del correo, si es passed, enviamos toda la información al login endpoint
+
 export function phone_verification_finish(params, callback) {
     return (dispatch, getState) =>{
-        debugger;
         dispatch(showLoading());
         API.prototype.phone_verification_finish(params,
             (success) =>{
                 dispatch(phoneVerificationFinish(success));
-                if(success.status === 'passed'){
+                if(success.status === 'passed' && success.alternate_credentials === null){
                     callback();
+                }else if(success.alternate_credentials !== null){
+                    dispatch(email_verification({email:success.alternate_credentials.data[0].credential}, callback));
                 }else{
                     dispatch(showError());
                 }
@@ -104,7 +109,7 @@ export function email_verification(params, callback) {
         API.prototype.email_verification(params,
             (success) =>{
                 dispatch(emailVerification(success));
-                callback();
+                callback && callback();
             },
             (error)=>{
                 dispatch(showError());
@@ -120,20 +125,22 @@ export function email_verification_status(params) {
                 dispatch(emailVerificationStatus(success));
             },
             (error)=>{
-                dispatch(showError("ERROR"));
+                dispatch(showError());
             }
         );
     };
 }
 
-export function new_user(params) {
+export function new_user(params, callback) {
     return (dispatch, getState) =>{
+        dispatch(showLoading());
         API.prototype.new_user(params,
             (success) =>{
                 dispatch(newUser(success));
+                callback();
             },
             (error)=>{
-                dispatch(showError("ERROR"));
+                dispatch(showError());
             }
         );
     };

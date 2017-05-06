@@ -89,14 +89,15 @@ class SignupForm extends React.Component {
 
     handleInputChange = (event) => {
         const target = event.target;
-        const value = target.name === 'secret' ? parseSecret(value) : target.value;
+        const value = target.name === 'secret' ? parseSecret(target.value) : target.value;
         const name = target.name;
         this.setState({[name]: value});
     }
 
     getStepContent(stepIndex) {
         const {country_code, phone_number, secret, email} = this.state;
-        const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification, loadingPhoneVerification, errorPhoneVerification} = this.props;
+        const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification, loadingPhoneVerification, errorPhoneVerification, isRegistered} = this.props;
+
         switch (stepIndex) {
             case 0:
                 return (
@@ -130,9 +131,10 @@ class SignupForm extends React.Component {
                         <StepperBody
                             loading={loadingPhoneVerification}
                             error={errorPhoneVerification}
-                            header="Personal information"
+                            header={isRegistered ? 'Email verification' : 'Personal information'}
                         />
-                    <TextField className="textfield" type="email" name="email" value={email} onChange={this.handleInputChange} floatingLabelText="Email" />
+                    {isRegistered ? <p>Confirmation email sent to <b>{isRegistered.data[0].credential}</b>. Waiting for email verification confirmation. Please check your email</p> :
+                    <TextField className="textfield" type="email" name="email" value={email} onChange={this.handleInputChange} floatingLabelText="Email" />}
                     </div>
                 );
             default:
@@ -142,7 +144,23 @@ class SignupForm extends React.Component {
 
     actions = () => {
         const {stepIndex, country_code, phone_number, secret, email} = this.state;
-        const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification} = this.props;
+        const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification, createUser} = this.props;
+        let data_points = {data:
+                [{
+                    email,
+                    data_type: 'email'
+                },
+                {
+                    phone_number,
+                    data_type: 'phone',
+                    verification: {
+                        secret,
+                        verification_id
+                    },
+                    country_code
+                }],
+            type: "list"
+        }
 
         switch (stepIndex) {
             case 0:
@@ -152,7 +170,9 @@ class SignupForm extends React.Component {
                 phoneVerificationStatus({secret, verification_id}, this.handleNext);
             break;
             case 2:
-                emailVerification({email}, this.handleNext);
+                debugger;
+                emailVerification({email});
+                createUser({data_points}, this.handleNext);
             break;
             default:
 
@@ -172,8 +192,8 @@ class SignupForm extends React.Component {
                                 this.setState({stepIndex: 0, finished: false});
                             }}
                         >
-                        Click here
-                        </a> to reset the example.
+                        User create successfully
+                    </a> Click to reset the example.
                     </p>
                 </div>
             );
