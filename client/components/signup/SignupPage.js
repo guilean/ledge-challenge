@@ -9,8 +9,7 @@ import styles from '../../sass/styles.scss';
 class SignupPage extends React.Component {
 
     render() {
-        const {phone_verification, phone_verification_finish, email_verification, verification_id} = this.props;
-
+        const {phone_verification, phone_verification_finish, email_verification, verification_id, phoneVerification_loading} = this.props;
         return (
             <div className="wrapper">
                 <div className="col-md-4 col-md-offset-4">
@@ -19,6 +18,7 @@ class SignupPage extends React.Component {
                         phoneVerificationStatus={phone_verification_finish}
                         emailVerification={email_verification}
                         verification_id={verification_id}
+                        loadingPhoneVerification={phoneVerification_loading}
                     />
                 </div>
             </div>
@@ -39,11 +39,12 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state, ownProps) {
-    debugger;
-    let {verification_id, status} = state.config.phoneVerification;
+    const {verification_id, status} = state.config.phoneVerification;
+    const {phoneVerification_loading} = state.config;
     return {
         verification_id,
-        status
+        status,
+        phoneVerification_loading
     }
 }
 

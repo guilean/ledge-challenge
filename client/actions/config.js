@@ -63,7 +63,6 @@ function showError(error) {
 
 export function phone_verification(params) {
     return (dispatch, getState) =>{
-        debugger;
         dispatch(showLoading());
         API.prototype.phone_verification(params,
             (success) =>{
@@ -78,6 +77,7 @@ export function phone_verification(params) {
 
 export function phone_verification_finish(params) {
     return (dispatch, getState) =>{
+        dispatch(showLoading());
         API.prototype.phone_verification_finish(params,
             (success) =>{
                 dispatch(phoneVerificationFinish(success));
@@ -91,6 +91,7 @@ export function phone_verification_finish(params) {
 
 export function email_verification(params) {
     return (dispatch, getState) =>{
+        dispatch(showLoading());
         API.prototype.email_verification(params,
             (success) =>{
                 dispatch(emailVerification(success));
