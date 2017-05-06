@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import RaisedButton from 'material-ui/FlatButton';
 import styles from '../sass/styles.scss';
-import Context from '../managers/Context';
+// import Context from '../managers/Context';
 import * as actions from '../actions/config';
 import API from '../domain/API';
 
