@@ -14,6 +14,5 @@ import Main from './containers/Main';
 export default (
     <Route path="/" component={App}>
         <IndexRoute component={Main} />
-
     </Route>
 )

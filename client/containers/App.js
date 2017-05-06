@@ -1,12 +1,17 @@
 import React from 'react';
 import FlashMessagesList from '../components/flash/FlashMessagesList';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends React.Component {
     render() {
         return (
             <div className="container">
-                <FlashMessagesList />
-                {this.props.children}
+                <MuiThemeProvider>
+                    <div>
+                        <FlashMessagesList />
+                        {this.props.children}
+                    </div>
+                </MuiThemeProvider>
             </div>
         );
     }
