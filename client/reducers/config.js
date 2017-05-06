@@ -23,24 +23,27 @@ export default (state = initialState, action = {}) => {
                 ...state,
                 phoneVerification: action.payload,
                 phoneVerification_loading: false,
+                phoneVerification_error: false,
             };
         case PHONE_VERIFICATION_FINISH:
             return {
                 ...state,
                 phoneVerification: action.payload,
                 phoneVerification_loading: false,
+                phoneVerification_error: false,
             };
         case LOADING:
-        debugger;
             return {
                 ...state,
-                phoneVerification_loading: true
+                phoneVerification_loading: true,
+                phoneVerification_error: false,
             };
         case EMAIL_VERIFICATION:
             return {
                 ...state,
                 emailVerification: action.payload,
-                phoneVerification_loading: false
+                phoneVerification_loading: false,
+                phoneVerification_error: false
             };
         case ERROR:
             return {

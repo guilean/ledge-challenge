@@ -17,3 +17,7 @@ export function formatPhone(value) {
         return;
     }
 }
+
+export function parseSecret(value) {
+    return value.replace(/-/g,'')
+}

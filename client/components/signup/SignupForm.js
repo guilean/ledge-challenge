@@ -14,14 +14,28 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
 import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
 import styles from '../../sass/styles.scss';
 import {cyan500, cyan600} from 'material-ui/styles/colors';
 import ReactPhoneInput from 'react-phone-input';
-import {formatPhone, formatCountryCode} from '../../utils/UtilsFormat';
+import {formatPhone, formatCountryCode, parseSecret} from '../../utils/UtilsFormat';
 
 const ResendCode = ({onClick}) => {
     return (
-        <FontIcon onClick={onClick} className="material-icons resend-code" hoverColor={cyan600} color={cyan500}>refresh</FontIcon>
+        <IconButton tooltip="Resend code" tooltipPosition="top-center">
+            <FontIcon onClick={onClick} className="material-icons resend-code" hoverColor={cyan600} color={cyan500}>refresh</FontIcon>
+        </IconButton>
+    );
+}
+
+const StepperBody = ({header, information, loading, error}) => {
+    return (
+        <div>
+            <h4 className="title-stepper">{header}</h4>
+            {loading && <CircularProgress className="spinner" size={20}/>}
+            {error && <p className="alert alert-danger">An error occurred.</p>}
+            <p>{information}</p>
+        </div>
     );
 }
 
@@ -75,33 +89,37 @@ class SignupForm extends React.Component {
 
     handleInputChange = (event) => {
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const value = target.name === 'secret' ? parseSecret(value) : target.value;
         const name = target.name;
-
         this.setState({[name]: value});
     }
 
     getStepContent(stepIndex) {
         const {country_code, phone_number, secret, email} = this.state;
-        const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification} = this.props;
+        const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification, loadingPhoneVerification, errorPhoneVerification} = this.props;
         switch (stepIndex) {
             case 0:
                 return (
                     <div>
-                        <h4 className="title-stepper">Get started</h4>
-                        {this.props.loadingPhoneVerification && <CircularProgress className="spinner" size={20}/>}
-                        <p>We'll send a one-time SMS to verify your phone number. Carrier SMS fees may apply.</p>
+                        <StepperBody
+                            loading={loadingPhoneVerification}
+                            error={errorPhoneVerification}
+                            header="Get Started"
+                            information="We'll send a one-time SMS to verify your phone number. Carrier SMS fees may apply."
+                        />
                         <ReactPhoneInput onlyCountries={['us','es']} defaultCountry={'us'} onChange={this.handleOnChange}/>
                     </div>
                 );
             case 1:
                 return (
                     <div>
-                        <h4 className="title-stepper">Verify {phone_number}</h4>
-                        {this.props.loadingPhoneVerification && <CircularProgress className="spinner" size={20}/>}
-                        <p>We've sent a verification code to the phone number listed above.
-                            Enter it below or go to previous step to change the phone number.
-                        </p>
+                        <StepperBody
+                            loading={loadingPhoneVerification}
+                            error={errorPhoneVerification}
+                            header={"Verify " + phone_number}
+                            information="We've sent a verification code to the phone number listed above.
+                                Enter it below or go to previous step to change the phone number."
+                        />
                         <TextField className="textfield" name="secret" value={secret} onChange={this.handleInputChange} floatingLabelText="Verification code" />
                         <ResendCode onClick={() => phoneVerification({phone_number, country_code})} />
                     </div>
@@ -109,9 +127,12 @@ class SignupForm extends React.Component {
             case 2:
                 return (
                     <div>
-                        <h4 className="title-stepper">Personal information</h4>
-                        {this.props.loadingPhoneVerification && <CircularProgress className="spinner" size={20}/>}
-                        <TextField className="textfield" name="email" value={email} onChange={this.handleInputChange} floatingLabelText="Email" />
+                        <StepperBody
+                            loading={loadingPhoneVerification}
+                            error={errorPhoneVerification}
+                            header="Personal information"
+                        />
+                    <TextField className="textfield" type="email" name="email" value={email} onChange={this.handleInputChange} floatingLabelText="Email" />
                     </div>
                 );
             default:
@@ -179,8 +200,6 @@ class SignupForm extends React.Component {
       }
 
     render() {
-        console.log(this.props.loadingPhoneVerification, 'LOADING');
-        console.log(this.state);
         const {loading, stepIndex} = this.state;
 
         return (
@@ -196,8 +215,8 @@ class SignupForm extends React.Component {
 SignupForm.propTypes = {
     phoneVerification: PropTypes.func.isRequired,
     phoneVerificationId: PropTypes.string,
-    emailVerification: PropTypes.func.isRequired
-    // isUserExists: PropTypes.func.isRequired
+    emailVerification: PropTypes.func.isRequired,
+    phoneVerificationStatus: PropTypes.func
 }
 
 SignupForm.contextTypes = {

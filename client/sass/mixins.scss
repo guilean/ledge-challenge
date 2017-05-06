@@ -1,0 +1,269 @@
+// Colors variables
+$black: #000000;
+$white: #ffffff;
+$grey:#54585a;
+$transparent: rgba(0, 0, 0, 0);
+$fullBlack: rgba(0, 0, 0, 1);
+$darkBlack: rgba(0, 0, 0, 0.87);
+$lightBlack: rgba(0, 0, 0, 0.54);
+$minBlack: rgba(0, 0, 0, 0.26);
+$faintBlack: rgba(0, 0, 0, 0.12);
+$fullWhite: rgba(255, 255, 255, 1);
+$darkWhite: rgba(255, 255, 255, 0.87);
+$lightWhite: rgba(255, 255, 255, 0.54);
+$fm_black: #212121;
+$fm_grey1:#CCCCCC;//hints
+$fm_grey2:#636363;
+$fm_grey3:#8D8D8D;
+$fm_grey4: #f8f8f8;
+$fm_grey5: #d8d8d8;
+$fm_blue: #216DB3;
+$fm_icon: #A2B2C0;//#
+$fm_background: #f0f0f0;
+$fm_icon_disabled: #bac6d0;
+$fm_primary:#ed8b00;
+$fm_red: #f04540;
+$fm_orange: #ed8b00;
+$fm_green: #90a700;
+$border:#ddd;
+$green_completed: #87BB2D;
+$turquoise: #02A88D;
+$pending_button: #B59722;
+$disabled: #ddd;
+$hint_text: #bbb;
+
+// Fonts variables
+$fontFamily: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$fontLight: 300;
+$fontRegular: 400;
+$fontMedium: 500;
+
+$fontSizeXss: 10px;
+$fontSizeXs: 11px;
+$fontSizeMd: 13px;
+$fontSizeLg: 16px;
+$fontSizeXl: 18px;
+$fontSizeXxl: 20px;
+
+$letterSpacing: 0.5px;
+
+// Mixins
+@mixin icon() {
+    font-size: $fontSizeXl;
+    color: #B4BDC5;
+    &:hover {
+        color: #9AA5AF;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+    }
+    &:active {
+        color: #788590;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+    }
+}
+@mixin defaultText() {
+    font-family: $fontFamily;
+    letter-spacing: $letterSpacing;
+    font-size: $fontSizeXs;
+}
+
+@mixin modal_title() {
+    @include defaultText();
+    font-size: $fontSizeXl;
+    color: $black;
+    font-weight: $fontMedium;
+}
+
+@mixin big_text_xl() {
+    @include defaultText();
+    font-weight: $fontRegular;
+    font-size: $fontSizeXxl;
+    color: $fm_black;
+}
+
+@mixin big_text_lg() {
+    @include defaultText();
+    font-weight: $fontRegular;
+    font-size: $fontSizeLg;
+    color: $fm_black;
+}
+
+@mixin big_text_md() {
+    @include defaultText();
+    font-weight: $fontRegular;
+    font-size: $fontSizeLg;
+    color: $fm_black;
+    line-height: 20px;
+}
+
+@mixin big_text_xs() {
+    @include defaultText();
+    font-weight: $fontRegular;
+    font-size: $fontSizeXs;
+    color: $fm_black;
+}
+
+@mixin text_lg() {
+    @include defaultText();
+    font-weight: $fontLight;
+    font-size: $fontSizeLg;
+    color: $fm_grey2;
+}
+
+@mixin text_md() {
+    @include defaultText();
+    font-weight: $fontRegular;
+    font-size: $fontSizeMd;
+    color: $fm_grey2;
+    line-height: 20px;
+}
+
+@mixin text_md_light() {
+    @include defaultText();
+    font-weight: $fontRegular;
+    font-size: $fontSizeMd;
+    color: $fm_grey3;
+}
+
+@mixin text_xs() {
+    @include defaultText();
+    font-weight: $fontLight;
+    font-size: $fontSizeXs;
+    color: $fm_grey2;
+    line-height: 20px;
+}
+
+@mixin text_lg_hint() {
+    @include defaultText();
+    font-weight: $fontLight;
+    font-size: $fontSizeLg;
+    color: $fm_grey1;
+}
+
+@mixin text_md_hint() {
+    @include defaultText();
+    font-weight: $fontLight;
+    font-size: $fontSizeMd;
+    color: $fm_grey1;
+    line-height: 20px;
+}
+
+@mixin text_xs_hint() {
+    @include defaultText();
+    font-weight: $fontLight;
+    font-size: $fontSizeXs;
+    color: $fm_grey1;
+    line-height: 20px;
+}
+
+@mixin link_lg() {
+    @include defaultText();
+    font-weight: $fontRegular;
+    font-size: $fontSizeLg;
+    cursor: pointer;
+    color: $fm_blue;
+    line-height: 20px;
+}
+
+@mixin link_md() {
+    @include defaultText();
+    font-weight: $fontRegular;
+    font-size: $fontSizeMd;
+    cursor: pointer;
+    color: $fm_blue;
+    text-decoration: none;
+}
+
+@mixin link_xs() {
+    @include defaultText();
+    font-weight: $fontLight;
+    font-size: $fontSizeXs;
+    cursor: pointer;
+    color: $fm_blue;
+}
+
+@mixin modal_title() {
+    @include defaultText();
+    font-weight: $fontMedium;
+    font-size: $fontSizeXl;
+    cursor: pointer;
+    color: $fm_black;
+}
+
+@mixin fm_h3() {
+    @include defaultText();
+    font-weight: $fontMedium;
+    font-size: $fontSizeLg;
+    color: $grey;
+}
+
+@mixin ellipsis() {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.1;
+}
+
+@mixin completed_button() {
+    @include defaultText();
+    font-size: $fontSizeXss;
+    color: $green_completed;
+    text-transform: uppercase;
+    background-color: #E7F1D5;
+    border-radius: 3px;
+    text-align: center;
+    padding: 4px 10px 5px 10px;
+    height: 20px;
+}
+
+@mixin pending_button() {
+    @include defaultText();
+    font-size: $fontSizeXss;
+    color: $pending_button;
+    text-transform: uppercase;
+    background-color: #FFF2C1;
+    border-radius: 3px;
+    text-align: center;
+    padding: 4px 10px 5px 10px;
+    height: 20px;
+}
+
+@mixin uncompleted_button() {
+    @include defaultText();
+    font-size: $fontSizeXss;
+    color: #8A8A8A;
+    text-transform: uppercase;
+    background-color: #F0F0F0;
+    border-radius: 3px;
+    text-align: center;
+    padding: 4px 10px 5px 10px;
+    height: 20px;
+}
+
+@mixin price_text() {
+    font-family: $fontFamily;
+    font-size: 36px;
+    font-weight: $fontMedium;
+    color: #636363;
+    letter-spacing: 0;
+    line-height: 42px;
+}
+
+@mixin default_button_primary() {
+	padding: 6px 20px 8px;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 21px;
+	background: rgb(237, 139, 0);
+	color: rgb(255, 255, 255);
+	margin-left: 10px;
+	height: 30px;
+	text-decoration: none;
+	font-size: $fontSizeMd;
+}

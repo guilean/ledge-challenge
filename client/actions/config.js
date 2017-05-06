@@ -80,11 +80,16 @@ export function phone_verification(params, callback) {
 
 export function phone_verification_finish(params, callback) {
     return (dispatch, getState) =>{
+        debugger;
         dispatch(showLoading());
         API.prototype.phone_verification_finish(params,
             (success) =>{
                 dispatch(phoneVerificationFinish(success));
-                callback();
+                if(success.status === 'passed'){
+                    callback();
+                }else{
+                    dispatch(showError());
+                }
             },
             (error)=>{
                 dispatch(showError());
