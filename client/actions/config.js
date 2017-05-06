@@ -52,6 +52,10 @@ function login(payload) {
     };
 }
 
+function showLoading() {
+    return { type: LOADING};
+}
+
 function showError(error) {
     return { type: LOAD_CONFIG_ERROR ,error:error}
 }

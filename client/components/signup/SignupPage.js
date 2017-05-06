@@ -9,22 +9,17 @@ import styles from '../../sass/styles.scss';
 class SignupPage extends React.Component {
 
     render() {
+        const {phone_verification} = this.props;
         // this.props.phone_verification({"phone_number":"4232050478","country_code":"1"});
         const a = this.props;
         return (
             <div className="wrapper">
                 <div className="col-md-4 col-md-offset-4">
-                    <SignupForm />
+                    <SignupForm phoneVerification={phone_verification}/>
                 </div>
             </div>
         );
     }
-}
-
-SignupPage.propTypes = {
-    // userSignupRequest: PropTypes.func.isRequired,
-    // addFlashMessage: PropTypes.func.isRequired,
-    // isUserExists: PropTypes.func.isRequired
 }
 
 function mapDispatchToProps(dispatch) {

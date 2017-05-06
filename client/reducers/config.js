@@ -10,6 +10,6 @@ export default (state = initialState, action = {}) => {
             return {
                 userData: action.payload
             };
-          default: return state;
+        default: return state;
     }
 }
