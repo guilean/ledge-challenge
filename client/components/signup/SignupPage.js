@@ -1,20 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
 import SignupForm from './SignupForm';
 import { connect } from 'react-redux';
-import { userSignupRequest, isUserExists } from '../../actions/signupActions';
-import { addFlashMessage } from '../../actions/flashMessages.js';
+import { bindActionCreators } from 'redux';
+import * as actions from '../../actions/config';
+import styles from '../../sass/styles.scss';
 
 class SignupPage extends React.Component {
+
     render() {
-        const { userSignupRequest, addFlashMessage, isUserExists } = this.props;
+        // this.props.phone_verification({"phone_number":"4232050478","country_code":"1"});
+        const a = this.props;
         return (
-            <div className="row">
+            <div className="wrapper">
                 <div className="col-md-4 col-md-offset-4">
-                    <SignupForm
-                        isUserExists={isUserExists}
-                        userSignupRequest={userSignupRequest}
-                        addFlashMessage={addFlashMessage} />
+                    <SignupForm />
                 </div>
             </div>
         );
@@ -22,10 +22,21 @@ class SignupPage extends React.Component {
 }
 
 SignupPage.propTypes = {
-    userSignupRequest: PropTypes.func.isRequired,
-    addFlashMessage: PropTypes.func.isRequired,
-    isUserExists: PropTypes.func.isRequired
+    // userSignupRequest: PropTypes.func.isRequired,
+    // addFlashMessage: PropTypes.func.isRequired,
+    // isUserExists: PropTypes.func.isRequired
 }
 
+function mapDispatchToProps(dispatch) {
+    const {phone_verification, phone_verification_finish, email_verification, email_verification_status, new_user, login} = bindActionCreators(actions, dispatch);
+    return {
+        phone_verification,
+        phone_verification_finish,
+        email_verification,
+        email_verification_status,
+        new_user,
+        login
+    }
+}
 
-export default connect(null, { userSignupRequest, addFlashMessage, isUserExists })(SignupPage);
+export default connect(null, mapDispatchToProps)(SignupPage);

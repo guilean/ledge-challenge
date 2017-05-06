@@ -1,153 +1,141 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import map from 'lodash/map';
 import classnames from 'classnames';
-import validateInput from '../../../server/shared/validations/signup';
-import TextFieldGroup from '../common/TextFieldGroup';
+import {
+    Step,
+    Stepper,
+    StepLabel,
+} from 'material-ui/Stepper';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import ExpandTransition from 'material-ui/internal/ExpandTransition';
+import TextField from 'material-ui/TextField';
+import styles from '../../sass/styles.scss';
 
 class SignupForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            email: '',
-            password: '',
-            passwordConfirmation: '',
-            timezone: '',
-            errors: {},
-            isLoading: false,
-            invalid: false
+
+    state = {
+        loading: false,
+        finished: false,
+        stepIndex: 0,
+    };
+
+    dummyAsync = (cb) => {
+        this.setState({loading: true}, () => {
+            this.asyncTimer = setTimeout(cb, 500);
+        });
+    };
+
+    handleNext = () => {
+        const {stepIndex} = this.state;
+        if (!this.state.loading) {
+            this.dummyAsync(() => this.setState({
+                loading: false,
+                stepIndex: stepIndex + 1,
+                finished: stepIndex >= 2,
+            }));
         }
+    };
 
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.checkUserExists = this.checkUserExists.bind(this);
-    }
-
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    isValid() {
-        const { errors, isValid } = validateInput(this.state);
-
-        if (!isValid) {
-            this.setState({ errors });
+    handlePrev = () => {
+        const {stepIndex} = this.state;
+        if (!this.state.loading) {
+            this.dummyAsync(() => this.setState({
+            loading: false,
+            stepIndex: stepIndex - 1,
+            }));
         }
+    };
 
-        return isValid;
-    }
-
-    checkUserExists(e) {
-        const field = e.target.name;
-        const val = e.target.value;
-        if (val !== '') {
-            this.props.isUserExists(val).then(res => {
-                let errors = this.state.errors;
-                let invalid;
-                if (res.data.user) {
-                    errors[field] = 'There is user with such ' + field;
-                    invalid = true;
-                } else {
-                    errors[field] = '';
-                    invalid = false;
-                }
-                this.setState({ errors, invalid });
-            });
+      getStepContent(stepIndex) {
+        switch (stepIndex) {
+            case 0:
+                return (
+                    <div>
+                        <h4>Get started</h4>
+                        <p>We'll send a one-time SMS to verify your phone number. Carrier SMS fees may apply.</p>
+                        <TextField className="textfield" style={{marginTop: 0}} floatingLabelText="Mobile Number" />
+                    </div>
+                );
+            case 1:
+                return (
+                    <div>
+                        <h4>Verify _PHONE STATE</h4>
+                        <p>We've sent a verification code to the phone number listed above.
+                            Enter it below or go to previous step to change the phone number.
+                        </p>
+                        <TextField className="textfield" style={{marginTop: 0}} floatingLabelText="Verification code" />
+                    </div>
+                );
+            case 2:
+                return (
+                    <div>
+                        <h4>Personal information</h4>
+                        <TextField className="textfield" style={{marginTop: 0}} floatingLabelText="Email" />
+                    </div>
+                );
+          default:
+            return 'No information';
         }
     }
 
-    onSubmit(e) {
-        e.preventDefault();
+    renderContent() {
+        const {finished, stepIndex} = this.state;
+        const contentStyle = {margin: '0 16px', overflow: 'hidden'};
 
-        if (this.isValid()) {
-            this.setState({ errors: {}, isLoading: true });
-            this.props.userSignupRequest(this.state).then(
-                () => {
-                    this.props.addFlashMessage({
-                        type: 'success',
-                        text: 'You signed up successfully. Welcome!'
-                    });
-                    this.context.router.push('/');
-                },
-                (err) => this.setState({ errors: err.response.data, isLoading: false })
+        if (finished) {
+            return (
+                <div style={contentStyle}>
+                    <p>
+                        <a href="#" onClick={(event) => {
+                                event.preventDefault();
+                                this.setState({stepIndex: 0, finished: false});
+                            }}
+                        >
+                        Click here
+                        </a> to reset the example.
+                    </p>
+                </div>
             );
         }
-    }
+
+        return (
+            <div className="stepper">
+                <div>{this.getStepContent(stepIndex)}</div>
+                <div style={{marginTop: 24, marginBottom: 12}}>
+                    <FlatButton
+                        label="Back"
+                        disabled={stepIndex === 0}
+                        onTouchTap={this.handlePrev}
+                        style={{marginRight: 12}}
+                    />
+                    <RaisedButton
+                        label={stepIndex === 2 ? 'Finish' : 'Next'}
+                        primary={true}
+                        onTouchTap={this.handleNext}
+                    />
+                </div>
+            </div>
+        );
+      }
 
     render() {
-        const { errors } = this.state;
-        const options = map(timezones, (val, key) =>
-        <option key={val} value={val}>{key}</option>
-    );
-    return (
-        <form onSubmit={this.onSubmit}>
-            <h1>Join our community!</h1>
+        const {loading, stepIndex} = this.state;
 
-            <TextFieldGroup
-                error={errors.username}
-                label="Username"
-                onChange={this.onChange}
-                checkUserExists={this.checkUserExists}
-                value={this.state.username}
-                field="username"
-                />
-
-            <TextFieldGroup
-                error={errors.email}
-                label="Email"
-                onChange={this.onChange}
-                checkUserExists={this.checkUserExists}
-                value={this.state.email}
-                field="email"
-                />
-
-            <TextFieldGroup
-                error={errors.password}
-                label="Password"
-                onChange={this.onChange}
-                value={this.state.password}
-                field="password"
-                type="password"
-                />
-
-            <TextFieldGroup
-                error={errors.passwordConfirmation}
-                label="Password Confirmation"
-                onChange={this.onChange}
-                value={this.state.passwordConfirmation}
-                field="passwordConfirmation"
-                type="password"
-                />
-
-            <div className={classnames("form-group", { 'has-error': errors.timezone })}>
-                <label className="control-label">Timezone</label>
-                <select
-                    className="form-control"
-                    name="timezone"
-                    onChange={this.onChange}
-                    value={this.state.timezone}
-                    >
-                    <option value="" disabled>Choose Your Timezone</option>
-                    {options}
-                </select>
-                {errors.timezone && <span className="help-block">{errors.timezone}</span>}
+        return (
+            <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
+                <ExpandTransition loading={loading} open={true}>
+                    {this.renderContent()}
+                </ExpandTransition>
             </div>
-
-            <div className="form-group">
-                <button disabled={this.state.isLoading || this.state.invalid} className="btn btn-primary btn-lg">
-                    Sign up
-                </button>
-            </div>
-        </form>
-    );
-}
+        );
+    }
 }
 
 SignupForm.propTypes = {
-    userSignupRequest: PropTypes.func.isRequired,
-    addFlashMessage: PropTypes.func.isRequired,
-    isUserExists: PropTypes.func.isRequired
+    // userSignupRequest: PropTypes.func.isRequired,
+    // addFlashMessage: PropTypes.func.isRequired,
+    // isUserExists: PropTypes.func.isRequired
 }
 
 SignupForm.contextTypes = {

@@ -7,10 +7,7 @@ class App extends React.Component {
         return (
             <div className="container">
                 <MuiThemeProvider>
-                    <div>
-                        <FlashMessagesList />
-                        {this.props.children}
-                    </div>
+                    {this.props.children}
                 </MuiThemeProvider>
             </div>
         );
