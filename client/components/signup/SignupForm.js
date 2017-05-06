@@ -13,9 +13,17 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
+import FontIcon from 'material-ui/FontIcon';
 import styles from '../../sass/styles.scss';
+import {cyan500, cyan600} from 'material-ui/styles/colors';
 import ReactPhoneInput from 'react-phone-input';
 import {formatPhone, formatCountryCode} from '../../utils/UtilsFormat';
+
+const ResendCode = ({onClick}) => {
+    return (
+        <FontIcon onClick={onClick} className="material-icons resend-code" hoverColor={cyan600} color={cyan500}>refresh</FontIcon>
+    );
+}
 
 class SignupForm extends React.Component {
 
@@ -26,7 +34,7 @@ class SignupForm extends React.Component {
         country_code: '',
         phone_number: '',
         secret: '',
-        mail: '',
+        email: '',
     };
 
     handleOnChange = (value) => {
@@ -46,8 +54,6 @@ class SignupForm extends React.Component {
 
     handleNext = () => {
         const {stepIndex, loading} = this.state;
-        let a = this.props;
-        debugger;
         if (!loading) {
             this.dummyAsync(() => this.setState({
                 loading: false,
@@ -66,17 +72,18 @@ class SignupForm extends React.Component {
             }));
         }
     };
-    // Refactor dynamic mode
-    handleChangeSecret = (event) => {
-        this.setState({secret: event.target.value});
-    };
 
-    handleChangeMail = (event) => {
-        this.setState({email: event.target.value});
-    };
+    handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({[name]: value});
+    }
 
     getStepContent(stepIndex) {
-        const {phone_number, secret, email} = this.state;
+        const {country_code, phone_number, secret, email} = this.state;
+        const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification} = this.props;
         switch (stepIndex) {
             case 0:
                 return (
@@ -95,7 +102,8 @@ class SignupForm extends React.Component {
                         <p>We've sent a verification code to the phone number listed above.
                             Enter it below or go to previous step to change the phone number.
                         </p>
-                        <TextField className="textfield" value={secret} onChange={this.handleChangeSecret} floatingLabelText="Verification code" />
+                        <TextField className="textfield" name="secret" value={secret} onChange={this.handleInputChange} floatingLabelText="Verification code" />
+                        <ResendCode onClick={() => phoneVerification({phone_number, country_code})} />
                     </div>
                 );
             case 2:
@@ -103,7 +111,7 @@ class SignupForm extends React.Component {
                     <div>
                         <h4 className="title-stepper">Personal information</h4>
                         {this.props.loadingPhoneVerification && <CircularProgress className="spinner" size={20}/>}
-                        <TextField className="textfield" value={email} onChange={this.handleChangeMail} floatingLabelText="Email" />
+                        <TextField className="textfield" name="email" value={email} onChange={this.handleInputChange} floatingLabelText="Email" />
                     </div>
                 );
             default:

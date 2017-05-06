@@ -69,7 +69,7 @@ export function phone_verification(params, callback) {
         API.prototype.phone_verification(params,
             (success) =>{
                 dispatch(phoneVerification(success));
-                callback();
+                callback && callback();
             },
             (error)=>{
                 dispatch(showError());
