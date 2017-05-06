@@ -5,6 +5,7 @@ export const EMAIL_VERIFICATION_STATUS = 'EMAIL_VERIFICATION_STATUS';
 export const NEW_USER = 'NEW_USER';
 export const LOGIN = 'LOGIN';
 export const LOADING = 'LOADING';
+export const ERROR = 'ERROR';
 export const LOAD_CONFIG_ERROR = 'LOAD_CONFIG_ERROR';
 export const ADD_FLASH_MESSAGE = 'ADD_FLASH_MESSAGE';
 export const DELETE_FLASH_MESSAGE = 'DELETE_FLASH_MESSAGE';

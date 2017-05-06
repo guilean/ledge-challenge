@@ -12,6 +12,7 @@ import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import CircularProgress from 'material-ui/CircularProgress';
 import styles from '../../sass/styles.scss';
 import ReactPhoneInput from 'react-phone-input';
 import {formatPhone, formatCountryCode} from '../../utils/UtilsFormat';
@@ -45,6 +46,8 @@ class SignupForm extends React.Component {
 
     handleNext = () => {
         const {stepIndex, loading} = this.state;
+        let a = this.props;
+        debugger;
         if (!loading) {
             this.dummyAsync(() => this.setState({
                 loading: false,
@@ -78,7 +81,8 @@ class SignupForm extends React.Component {
             case 0:
                 return (
                     <div>
-                        <h4>Get started</h4>
+                        <h4 className="title-stepper">Get started</h4>
+                        {this.props.loadingPhoneVerification && <CircularProgress className="spinner" size={20}/>}
                         <p>We'll send a one-time SMS to verify your phone number. Carrier SMS fees may apply.</p>
                         <ReactPhoneInput onlyCountries={['us','es']} defaultCountry={'us'} onChange={this.handleOnChange}/>
                     </div>
@@ -86,7 +90,8 @@ class SignupForm extends React.Component {
             case 1:
                 return (
                     <div>
-                        <h4>Verify {phone_number}</h4>
+                        <h4 className="title-stepper">Verify {phone_number}</h4>
+                        {this.props.loadingPhoneVerification && <CircularProgress className="spinner" size={20}/>}
                         <p>We've sent a verification code to the phone number listed above.
                             Enter it below or go to previous step to change the phone number.
                         </p>
@@ -96,7 +101,8 @@ class SignupForm extends React.Component {
             case 2:
                 return (
                     <div>
-                        <h4>Personal information</h4>
+                        <h4 className="title-stepper">Personal information</h4>
+                        {this.props.loadingPhoneVerification && <CircularProgress className="spinner" size={20}/>}
                         <TextField className="textfield" value={email} onChange={this.handleChangeMail} floatingLabelText="Email" />
                     </div>
                 );
@@ -111,16 +117,13 @@ class SignupForm extends React.Component {
 
         switch (stepIndex) {
             case 0:
-                phoneVerification({phone_number, country_code});
-                this.handleNext();
+                phoneVerification({phone_number, country_code}, this.handleNext);
             break;
             case 1:
-                phoneVerificationStatus({secret, verification_id})
-                this.handleNext();
+                phoneVerificationStatus({secret, verification_id}, this.handleNext);
             break;
             case 2:
-                emailVerification({email})
-                this.handleNext();
+                emailVerification({email}, this.handleNext);
             break;
             default:
 
@@ -168,6 +171,7 @@ class SignupForm extends React.Component {
       }
 
     render() {
+        console.log(this.props.loadingPhoneVerification, 'LOADING');
         console.log(this.state);
         const {loading, stepIndex} = this.state;
 

@@ -1,4 +1,4 @@
-import { PHONE_VERIFICATION, LOAD_CONFIG_ERROR, PHONE_VERIFICATION_FINISH, LOADING, EMAIL_VERIFICATION } from '../actions/types';
+import { PHONE_VERIFICATION, LOAD_CONFIG_ERROR, PHONE_VERIFICATION_FINISH, LOADING, EMAIL_VERIFICATION, ERROR } from '../actions/types';
 
 const initialState = {
     userData: {},
@@ -7,6 +7,7 @@ const initialState = {
         status: ''
     },
     phoneVerification_loading: false,
+    phoneVerification_error: false,
     emailVerification: {
         type: '',
         verification_id: '',
@@ -21,15 +22,16 @@ export default (state = initialState, action = {}) => {
             return {
                 ...state,
                 phoneVerification: action.payload,
-                phoneVerification_loading: false
+                phoneVerification_loading: false,
             };
         case PHONE_VERIFICATION_FINISH:
             return {
                 ...state,
                 phoneVerification: action.payload,
-                phoneVerification_loading: false
+                phoneVerification_loading: false,
             };
         case LOADING:
+        debugger;
             return {
                 ...state,
                 phoneVerification_loading: true
@@ -38,6 +40,12 @@ export default (state = initialState, action = {}) => {
             return {
                 ...state,
                 emailVerification: action.payload,
+                phoneVerification_loading: false
+            };
+        case ERROR:
+            return {
+                ...state,
+                phoneVerification_error: true,
                 phoneVerification_loading: false
             };
         default: return state;

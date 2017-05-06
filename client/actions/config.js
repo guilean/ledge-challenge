@@ -6,7 +6,8 @@ import {
     EMAIL_VERIFICATION_STATUS,
     NEW_USER,
     LOGIN,
-    LOADING
+    LOADING,
+    ERROR
 } from './types';
 // import Context from '../managers/Context';
 import API from '../domain/API';
@@ -54,50 +55,54 @@ function login(payload) {
 }
 
 function showLoading() {
-    return { type: LOADING};
+    return { type: LOADING };
 }
 
-function showError(error) {
-    return { type: LOAD_CONFIG_ERROR ,error:error}
+function showError() {
+    return { type: ERROR }
 }
 
-export function phone_verification(params) {
+export function phone_verification(params, callback) {
+    debugger;
     return (dispatch, getState) =>{
         dispatch(showLoading());
         API.prototype.phone_verification(params,
             (success) =>{
                 dispatch(phoneVerification(success));
+                callback();
             },
             (error)=>{
-                dispatch(showError("ERROR"));
+                dispatch(showError());
             }
         );
     };
 }
 
-export function phone_verification_finish(params) {
+export function phone_verification_finish(params, callback) {
     return (dispatch, getState) =>{
         dispatch(showLoading());
         API.prototype.phone_verification_finish(params,
             (success) =>{
                 dispatch(phoneVerificationFinish(success));
+                callback();
             },
             (error)=>{
-                dispatch(showError("ERROR"));
+                dispatch(showError());
             }
         );
     };
 }
 
-export function email_verification(params) {
+export function email_verification(params, callback) {
     return (dispatch, getState) =>{
         dispatch(showLoading());
         API.prototype.email_verification(params,
             (success) =>{
                 dispatch(emailVerification(success));
+                callback();
             },
             (error)=>{
-                dispatch(showError("ERROR"));
+                dispatch(showError());
             }
         );
     };
