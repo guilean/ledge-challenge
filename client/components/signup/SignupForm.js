@@ -24,6 +24,8 @@ class SignupForm extends React.Component {
         stepIndex: 0,
         country_code: '',
         phone_number: '',
+        secret: '',
+        mail: '',
     };
 
     handleOnChange = (value) => {
@@ -43,6 +45,7 @@ class SignupForm extends React.Component {
 
     handleNext = () => {
         const {stepIndex} = this.state;
+        debugger;
         if (!this.state.loading) {
             this.dummyAsync(() => this.setState({
                 loading: false,
@@ -62,11 +65,10 @@ class SignupForm extends React.Component {
         }
     };
 
-    handleChangeSelect = (event, index, country_code) => this.setState({country_code});
-    handleChangeText = (event, index, phone_number) => this.setState({phone_number: event.target.value});
+    handleChangeText = (event) => {debugger;this.setState({secret: event.target.value})};
 
     getStepContent(stepIndex) {
-        const {phone_number} = this.state;
+        const {phone_number, secret} = this.state;
         switch (stepIndex) {
             case 0:
                 return (
@@ -83,14 +85,14 @@ class SignupForm extends React.Component {
                         <p>We've sent a verification code to the phone number listed above.
                             Enter it below or go to previous step to change the phone number.
                         </p>
-                        <TextField className="textfield" onChange={this.handleChangeText} floatingLabelText="Verification code" />
+                        <TextField className="textfield" value={secret} onChange={this.handleChangeText} floatingLabelText="Verification code" />
                     </div>
                 );
             case 2:
                 return (
                     <div>
                         <h4>Personal information</h4>
-                        <TextField className="textfield" onChange={this.handleChangeText} floatingLabelText="Email" />
+                        <TextField className="textfield" onChange={this.handleChangeText.bind('mail')} floatingLabelText="Email" />
                     </div>
                 );
             default:
@@ -99,13 +101,23 @@ class SignupForm extends React.Component {
     }
 
     actions = () => {
-        const {stepIndex, country_code, phone_number} = this.state;
-        const {phoneVerification} = this.props;
+        debugger;
+        const {stepIndex, country_code, phone_number, secret} = this.state;
+        const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification} = this.props;
         debugger;
         switch (stepIndex) {
             case 0:
-                phoneVerification({phone_number, country_code})
-                break;
+                phoneVerification({phone_number, country_code});
+                this.handleNext();
+            break;
+            case 1:
+                phoneVerificationStatus({secret, verification_id})
+                this.handleNext();
+            break;
+            case 2:
+                emailVerification({email})
+                this.handleNext();
+            break;
             default:
 
         }
@@ -168,7 +180,8 @@ class SignupForm extends React.Component {
 
 SignupForm.propTypes = {
     phoneVerification: PropTypes.func.isRequired,
-    // addFlashMessage: PropTypes.func.isRequired,
+    phoneVerificationId: PropTypes.string,
+    emailVerification: PropTypes.func.isRequired
     // isUserExists: PropTypes.func.isRequired
 }
 

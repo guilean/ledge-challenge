@@ -64,7 +64,7 @@ export function phone_verification(params) {
     return (dispatch, getState) =>{
         API.prototype.phone_verification(params,
             (success) =>{
-                dispatch(phoneVerification(params));
+                dispatch(phoneVerification(success));
             },
             (error)=>{
                 dispatch(showError("ERROR"));
@@ -77,7 +77,7 @@ export function phone_verification_finish(params) {
     return (dispatch, getState) =>{
         API.prototype.phone_verification_finish(params,
             (success) =>{
-                dispatch(phoneVerificationFinish(params));
+                dispatch(phoneVerificationFinish(success));
             },
             (error)=>{
                 dispatch(showError("ERROR"));
@@ -90,7 +90,7 @@ export function email_verification(params) {
     return (dispatch, getState) =>{
         API.prototype.email_verification(params,
             (success) =>{
-                dispatch(emailVerification(params));
+                dispatch(emailVerification(success));
             },
             (error)=>{
                 dispatch(showError("ERROR"));
@@ -103,7 +103,7 @@ export function email_verification_status(params) {
     return (dispatch, getState) =>{
         API.prototype.email_verification_status(params,
             (success) =>{
-                dispatch(emailVerificationStatus(params));
+                dispatch(emailVerificationStatus(success));
             },
             (error)=>{
                 dispatch(showError("ERROR"));
@@ -116,7 +116,7 @@ export function new_user(params) {
     return (dispatch, getState) =>{
         API.prototype.new_user(params,
             (success) =>{
-                dispatch(newUser(params));
+                dispatch(newUser(success));
             },
             (error)=>{
                 dispatch(showError("ERROR"));
@@ -129,7 +129,7 @@ export function login(params) {
     return (dispatch, getState) =>{
         API.prototype.login(params,
             (success) =>{
-                dispatch(login(params));
+                dispatch(login(success));
             },
             (error)=>{
                 dispatch(showError("ERROR"));
