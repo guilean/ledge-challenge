@@ -5,7 +5,8 @@ import {
     EMAIL_VERIFICATION,
     EMAIL_VERIFICATION_STATUS,
     NEW_USER,
-    LOGIN
+    LOGIN,
+    LOADING
 } from './types';
 // import Context from '../managers/Context';
 import API from '../domain/API';
@@ -62,6 +63,8 @@ function showError(error) {
 
 export function phone_verification(params) {
     return (dispatch, getState) =>{
+        debugger;
+        dispatch(showLoading());
         API.prototype.phone_verification(params,
             (success) =>{
                 dispatch(phoneVerification(success));

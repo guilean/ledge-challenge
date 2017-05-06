@@ -45,7 +45,6 @@ class SignupForm extends React.Component {
 
     handleNext = () => {
         const {stepIndex} = this.state;
-        debugger;
         if (!this.state.loading) {
             this.dummyAsync(() => this.setState({
                 loading: false,
@@ -65,7 +64,7 @@ class SignupForm extends React.Component {
         }
     };
 
-    handleChangeText = (event) => {debugger;this.setState({secret: event.target.value})};
+    handleChangeText = (event) => this.setState({secret: event.target.value});
 
     getStepContent(stepIndex) {
         const {phone_number, secret} = this.state;
@@ -101,16 +100,16 @@ class SignupForm extends React.Component {
     }
 
     actions = () => {
-        debugger;
         const {stepIndex, country_code, phone_number, secret} = this.state;
         const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification} = this.props;
-        debugger;
+
         switch (stepIndex) {
             case 0:
                 phoneVerification({phone_number, country_code});
                 this.handleNext();
             break;
             case 1:
+            debugger;
                 phoneVerificationStatus({secret, verification_id})
                 this.handleNext();
             break;
