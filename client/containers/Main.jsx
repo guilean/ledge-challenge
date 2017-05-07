@@ -1,5 +1,5 @@
 import React from 'react';
-import SignUpPage from '../components/signup/SignUpPage';
+import SignUpPage from '../components/signup/SignupPage';
 import PropTypes from 'prop-types';
 
 class Main extends React.Component {
