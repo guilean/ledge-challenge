@@ -14,7 +14,7 @@ export default {
     },
     plugins: [
         new webpack.NoErrorsPlugin(),
-        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ],
     resolve: {

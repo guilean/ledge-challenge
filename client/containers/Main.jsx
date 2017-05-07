@@ -1,5 +1,6 @@
 import React from 'react';
 import SignUpPage from '../components/signup/SignUpPage';
+import PropTypes from 'prop-types';
 
 class Main extends React.Component {
 
