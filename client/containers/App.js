@@ -1,5 +1,4 @@
 import React from 'react';
-import FlashMessagesList from '../components/flash/FlashMessagesList';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends React.Component {

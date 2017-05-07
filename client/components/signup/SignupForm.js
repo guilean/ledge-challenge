@@ -18,7 +18,7 @@ import IconButton from 'material-ui/IconButton';
 import styles from '../../sass/styles.scss';
 import {cyan500, cyan600} from 'material-ui/styles/colors';
 import ReactPhoneInput from 'react-phone-input';
-import {formatPhone, formatCountryCode, parseSecret} from '../../utils/UtilsFormat';
+import {formatPhone, formatCountryCode, parseSecret, formatLoginParams, formatUserParams} from '../../utils/UtilsFormat';
 
 const ResendCode = ({onClick}) => {
     return (
@@ -146,46 +146,6 @@ class SignupForm extends React.Component {
         const {stepIndex, country_code, phone_number, secret, email} = this.state;
         const {phoneVerification, phoneVerificationStatus, verificationIdMail, verificationIdPhone, emailVerification, createUser, isRegistered, login, emailVerificationStatus} = this.props;
         let email_registered = isRegistered && isRegistered.data[0].credential;
-        debugger;
-        let data_points = {
-            data:
-                [{
-                    email,
-                    data_type: 'email'
-                },
-                {
-                    phone_number,
-                    data_type: 'phone',
-                    verification: {
-                        secret,
-                        verification_id: verificationIdPhone
-                    },
-                    country_code
-                }],
-            type: "list"
-        };
-
-        let user_login = {
-            data_points:
-            	{data:
-            		[
-            			{email: email_registered,
-            			data_type:"email",
-            			verification:{
-            				secret,
-            				verification_id: verificationIdMail}
-            			},
-            			{data_type:"phone",
-            			phone_number,
-            			verification:{
-            				secret,
-            				verification_id:verificationIdPhone},
-            			country_code}
-            		],
-            	type:"list"
-            	}
-        }
-
 
         switch (stepIndex) {
             case 0:
@@ -195,15 +155,11 @@ class SignupForm extends React.Component {
                 phoneVerificationStatus({secret, verification_id: verificationIdPhone}, this.handleNext);
             break;
             case 2:
-                console.log(this.state);
-                console.log(this.props);
                 if(isRegistered){
-                    debugger;
+                    let user_login = formatLoginParams(email_registered, phone_number, secret, verificationIdMail, verificationIdPhone, country_code);
                     emailVerificationStatus(verificationIdMail, login, user_login);
-                    // Si ya está registrado la acción será de login
-                    // login({login});
-                    // falta guardar en props secret, mail etc para meterlo en el objeto de userlogin
                 }else{
+                    let data_points = formatUserParams(email, phone_number, secret, verificationIdPhone, country_code);
                     emailVerification({email});
                     createUser({data_points}, this.handleNext);
                 }
@@ -252,8 +208,6 @@ class SignupForm extends React.Component {
       }
 
     render() {
-        console.log(this.state);
-        console.log(this.props);
         const {loading, stepIndex} = this.state;
 
         return (
@@ -270,7 +224,18 @@ SignupForm.propTypes = {
     phoneVerification: PropTypes.func.isRequired,
     phoneVerificationId: PropTypes.string,
     emailVerification: PropTypes.func.isRequired,
-    phoneVerificationStatus: PropTypes.func
+    phoneVerificationStatus: PropTypes.func,
+    phoneVerification: PropTypes.func,
+    phoneVerificationStatus: PropTypes.func,
+    emailVerification: PropTypes.func,
+    emailVerificationStatus: PropTypes.func,
+    verificationIdPhone: PropTypes.string,
+    verificationIdMail: PropTypes.string,
+    loadingPhoneVerification: PropTypes.bool,
+    errorPhoneVerification: PropTypes.bool,
+    createUser: PropTypes.func,
+    isRegistered: PropTypes.object,
+    login: PropTypes.func
 }
 
 SignupForm.contextTypes = {

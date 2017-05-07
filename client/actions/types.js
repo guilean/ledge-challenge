@@ -7,6 +7,3 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const LOADING = 'LOADING';
 export const ERROR = 'ERROR';
 export const LOAD_CONFIG_ERROR = 'LOAD_CONFIG_ERROR';
-export const ADD_FLASH_MESSAGE = 'ADD_FLASH_MESSAGE';
-export const DELETE_FLASH_MESSAGE = 'DELETE_FLASH_MESSAGE';
-export const SET_CURRENT_USER = 'SET_CURRENT_USER';
