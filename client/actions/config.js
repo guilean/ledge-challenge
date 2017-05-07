@@ -9,7 +9,7 @@ import {
     LOADING,
     ERROR
 } from './types';
-// import Context from '../managers/Context';
+import Context from '../managers/Context';
 import API from '../domain/API';
 
 function _phoneVerification(payload) {
@@ -65,7 +65,7 @@ function _showError() {
 export function phone_verification(params, callback) {
     return (dispatch, getState) =>{
         dispatch(_showLoading());
-        API.prototype.phone_verification(params,
+        Context.domainManager.phone_verification(params,
             (success) =>{
                 dispatch(_phoneVerification(success));
                 callback && callback();
@@ -80,7 +80,7 @@ export function phone_verification(params, callback) {
 export function phone_verification_finish(params, callback) {
     return (dispatch, getState) =>{
         dispatch(_showLoading());
-        API.prototype.phone_verification_finish(params,
+        Context.domainManager.phone_verification_finish(params,
             (success) =>{
                 dispatch(_phoneVerificationFinish(success));
                 if(success.status === 'passed' && success.alternate_credentials === null){
@@ -101,7 +101,7 @@ export function phone_verification_finish(params, callback) {
 export function email_verification(params, callback) {
     return (dispatch, getState) =>{
         dispatch(_showLoading());
-        API.prototype.email_verification(params,
+        Context.domainManager.email_verification(params,
             (success) =>{
                 dispatch(_emailVerification(success));
                 callback && callback();
@@ -116,7 +116,7 @@ export function email_verification(params, callback) {
 export function email_verification_status(params, callback, user_login) {
     return (dispatch, getState) =>{
         dispatch(_showLoading());
-        API.prototype.email_verification_status(params,
+        Context.domainManager.email_verification_status(params,
             (success) =>{
                 dispatch(_emailVerificationStatus(success));
                 if(success.status === 'passed'){
@@ -135,7 +135,7 @@ export function email_verification_status(params, callback, user_login) {
 export function new_user(params, callback) {
     return (dispatch, getState) =>{
         dispatch(_showLoading());
-        API.prototype.new_user(params,
+        Context.domainManager.new_user(params,
             (success) =>{
                 dispatch(_newUser(success));
                 callback();
@@ -150,7 +150,7 @@ export function new_user(params, callback) {
 export function login(params) {
     return (dispatch, getState) =>{
         dispatch(_showLoading());
-        API.prototype.login(params,
+        Context.domainManager.login(params,
             (success) =>{
                 dispatch(_login(success));
             },

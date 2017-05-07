@@ -1,10 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import SignupForm from './SignupForm';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/config';
-import styles from '../../sass/styles.scss';
 
 class SignupPage extends React.Component {
 

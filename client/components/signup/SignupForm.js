@@ -10,14 +10,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import styles from '../../sass/styles.scss';
 import {cyan500, cyan600} from 'material-ui/styles/colors';
 import ReactPhoneInput from 'react-phone-input';
+import styles from '../../sass/styles.scss';
 import {formatPhone, formatCountryCode, parseSecret, formatLoginParams, formatUserParams} from '../../utils/UtilsFormat';
 
 const ResendCode = ({onClick}) => {
@@ -30,7 +28,7 @@ const ResendCode = ({onClick}) => {
 
 const StepperBody = ({header, information, loading, error}) => {
     return (
-        <div>
+        <div className="stepper-panel">
             <h4 className="title-stepper">{header}</h4>
             {loading && <CircularProgress className="spinner" size={20}/>}
             {error && <p className="alert alert-danger">An error occurred.</p>}
@@ -101,7 +99,7 @@ class SignupForm extends React.Component {
         switch (stepIndex) {
             case 0:
                 return (
-                    <div>
+                    <div className="stepper-wrapper">
                         <StepperBody
                             loading={loadingPhoneVerification}
                             error={errorPhoneVerification}
@@ -113,7 +111,7 @@ class SignupForm extends React.Component {
                 );
             case 1:
                 return (
-                    <div>
+                    <div className="stepper-wrapper">
                         <StepperBody
                             loading={loadingPhoneVerification}
                             error={errorPhoneVerification}
@@ -127,7 +125,7 @@ class SignupForm extends React.Component {
                 );
             case 2:
                 return (
-                    <div>
+                    <div className="stepper-wrapper">
                         <StepperBody
                             loading={loadingPhoneVerification}
                             error={errorPhoneVerification}
@@ -190,7 +188,7 @@ class SignupForm extends React.Component {
         return (
             <div className="stepper">
                 <div>{this.getStepContent(stepIndex)}</div>
-                <div style={{marginTop: 24, marginBottom: 12}}>
+                <div className="btn-actions">
                     <FlatButton
                         label="Back"
                         disabled={stepIndex === 0}
@@ -211,7 +209,7 @@ class SignupForm extends React.Component {
         const {loading, stepIndex} = this.state;
 
         return (
-            <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
+            <div className="wrapper-ui">
                 <ExpandTransition loading={loading} open={true}>
                     {this.renderContent()}
                 </ExpandTransition>
