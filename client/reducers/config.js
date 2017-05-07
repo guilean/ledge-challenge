@@ -5,7 +5,9 @@ import {
     LOADING,
     EMAIL_VERIFICATION,
     ERROR,
-    NEW_USER
+    NEW_USER,
+    USER_LOGIN,
+    EMAIL_VERIFICATION_STATUS
 } from '../actions/types';
 
 const initialState = {
@@ -41,7 +43,6 @@ export default (state = initialState, action = {}) => {
                 phoneVerification_error: false,
             };
         case NEW_USER:
-        debugger;
             return {
                 ...state,
                 phoneVerification_loading: false,
@@ -51,6 +52,20 @@ export default (state = initialState, action = {}) => {
             return {
                 ...state,
                 emailVerification: action.payload,
+                phoneVerification_loading: false,
+                phoneVerification_error: false
+            };
+        case EMAIL_VERIFICATION_STATUS:
+            return {
+                ...state,
+                emailVerification: action.payload,
+                phoneVerification_loading: false,
+                phoneVerification_error: false
+            };
+        case USER_LOGIN:
+            return {
+                ...state,
+                userData: action.payload,
                 phoneVerification_loading: false,
                 phoneVerification_error: false
             };

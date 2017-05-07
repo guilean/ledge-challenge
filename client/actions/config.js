@@ -5,99 +5,94 @@ import {
     EMAIL_VERIFICATION,
     EMAIL_VERIFICATION_STATUS,
     NEW_USER,
-    LOGIN,
+    USER_LOGIN,
     LOADING,
     ERROR
 } from './types';
 // import Context from '../managers/Context';
 import API from '../domain/API';
 
-function phoneVerification(payload) {
+function _phoneVerification(payload) {
     return {
         type: PHONE_VERIFICATION,
         payload
     };
 }
 
-function phoneVerificationFinish(payload) {
+function _phoneVerificationFinish(payload) {
     return {
         type: PHONE_VERIFICATION_FINISH,
         payload
     };
 }
 
-function emailVerification(payload) {
+function _emailVerification(payload) {
     return {
         type: EMAIL_VERIFICATION,
         payload
     };
 }
 
-function emailVerificationStatus(payload) {
+function _emailVerificationStatus(payload) {
     return {
         type: EMAIL_VERIFICATION_STATUS,
         payload
     };
 }
 
-function newUser(payload) {
+function _newUser(payload) {
     return {
         type: NEW_USER,
         payload
     };
 }
 
-function login(payload) {
+function _login(payload) {
     return {
-        type: LOGIN,
+        type: USER_LOGIN,
         payload
     };
 }
 
-function showLoading() {
+function _showLoading() {
     return { type: LOADING };
 }
 
-function showError() {
+function _showError() {
     return { type: ERROR }
 }
 
 export function phone_verification(params, callback) {
     return (dispatch, getState) =>{
-        dispatch(showLoading());
+        dispatch(_showLoading());
         API.prototype.phone_verification(params,
             (success) =>{
-                dispatch(phoneVerification(success));
+                dispatch(_phoneVerification(success));
                 callback && callback();
             },
             (error)=>{
-                dispatch(showError());
+                dispatch(_showError());
             }
         );
     };
 }
 
-// Valido móvil
-// Envío el correo de las credenciales alternativas
-// Muestro pantalla de... Se te ha enviado un correo, validalo y haz clic aquí para loguearte
-// En ese caso comprobamos la llamada del status del correo, si es passed, enviamos toda la información al login endpoint
-
 export function phone_verification_finish(params, callback) {
     return (dispatch, getState) =>{
-        dispatch(showLoading());
+        dispatch(_showLoading());
         API.prototype.phone_verification_finish(params,
             (success) =>{
-                dispatch(phoneVerificationFinish(success));
+                dispatch(_phoneVerificationFinish(success));
                 if(success.status === 'passed' && success.alternate_credentials === null){
                     callback();
-                }else if(success.alternate_credentials !== null){
+                }else if(success.alternate_credentials.data[0].credential && success.alternate_credentials.data[0].credential !== ""){
                     dispatch(email_verification({email:success.alternate_credentials.data[0].credential}, callback));
                 }else{
-                    dispatch(showError());
+                    dispatch(_showError());
                 }
             },
             (error)=>{
-                dispatch(showError());
+                dispatch(_showError());
             }
         );
     };
@@ -105,27 +100,33 @@ export function phone_verification_finish(params, callback) {
 
 export function email_verification(params, callback) {
     return (dispatch, getState) =>{
-        dispatch(showLoading());
+        dispatch(_showLoading());
         API.prototype.email_verification(params,
             (success) =>{
-                dispatch(emailVerification(success));
+                dispatch(_emailVerification(success));
                 callback && callback();
             },
             (error)=>{
-                dispatch(showError());
+                dispatch(_showError());
             }
         );
     };
 }
 
-export function email_verification_status(params) {
+export function email_verification_status(params, callback, user_login) {
     return (dispatch, getState) =>{
+        dispatch(_showLoading());
         API.prototype.email_verification_status(params,
             (success) =>{
-                dispatch(emailVerificationStatus(success));
+                dispatch(_emailVerificationStatus(success));
+                if(success.status === 'passed'){
+                    callback && callback(user_login);
+                }else{
+                    dispatch(_showError());
+                }
             },
             (error)=>{
-                dispatch(showError());
+                dispatch(_showError());
             }
         );
     };
@@ -133,14 +134,14 @@ export function email_verification_status(params) {
 
 export function new_user(params, callback) {
     return (dispatch, getState) =>{
-        dispatch(showLoading());
+        dispatch(_showLoading());
         API.prototype.new_user(params,
             (success) =>{
-                dispatch(newUser(success));
+                dispatch(_newUser(success));
                 callback();
             },
             (error)=>{
-                dispatch(showError());
+                dispatch(_showError());
             }
         );
     };
@@ -148,12 +149,13 @@ export function new_user(params, callback) {
 
 export function login(params) {
     return (dispatch, getState) =>{
+        dispatch(_showLoading());
         API.prototype.login(params,
             (success) =>{
-                dispatch(login(success));
+                dispatch(_login(success));
             },
             (error)=>{
-                dispatch(showError("ERROR"));
+                dispatch(_showError());
             }
         );
     };

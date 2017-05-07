@@ -96,7 +96,7 @@ class SignupForm extends React.Component {
 
     getStepContent(stepIndex) {
         const {country_code, phone_number, secret, email} = this.state;
-        const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification, loadingPhoneVerification, errorPhoneVerification, isRegistered} = this.props;
+        const {phoneVerification, phoneVerificationStatus, verificationIdPhone, emailVerification, loadingPhoneVerification, errorPhoneVerification, isRegistered} = this.props;
 
         switch (stepIndex) {
             case 0:
@@ -144,8 +144,11 @@ class SignupForm extends React.Component {
 
     actions = () => {
         const {stepIndex, country_code, phone_number, secret, email} = this.state;
-        const {phoneVerification, phoneVerificationStatus, verification_id, emailVerification, createUser} = this.props;
-        let data_points = {data:
+        const {phoneVerification, phoneVerificationStatus, verificationIdMail, verificationIdPhone, emailVerification, createUser, isRegistered, login, emailVerificationStatus} = this.props;
+        let email_registered = isRegistered && isRegistered.data[0].credential;
+        debugger;
+        let data_points = {
+            data:
                 [{
                     email,
                     data_type: 'email'
@@ -155,37 +158,66 @@ class SignupForm extends React.Component {
                     data_type: 'phone',
                     verification: {
                         secret,
-                        verification_id
+                        verification_id: verificationIdPhone
                     },
                     country_code
                 }],
             type: "list"
+        };
+
+        let user_login = {
+            data_points:
+            	{data:
+            		[
+            			{email: email_registered,
+            			data_type:"email",
+            			verification:{
+            				secret,
+            				verification_id: verificationIdMail}
+            			},
+            			{data_type:"phone",
+            			phone_number,
+            			verification:{
+            				secret,
+            				verification_id:verificationIdPhone},
+            			country_code}
+            		],
+            	type:"list"
+            	}
         }
+
 
         switch (stepIndex) {
             case 0:
                 phoneVerification({phone_number, country_code}, this.handleNext);
             break;
             case 1:
-                phoneVerificationStatus({secret, verification_id}, this.handleNext);
+                phoneVerificationStatus({secret, verification_id: verificationIdPhone}, this.handleNext);
             break;
             case 2:
-                debugger;
-                emailVerification({email});
-                createUser({data_points}, this.handleNext);
+                console.log(this.state);
+                console.log(this.props);
+                if(isRegistered){
+                    debugger;
+                    emailVerificationStatus(verificationIdMail, login, user_login);
+                    // Si ya está registrado la acción será de login
+                    // login({login});
+                    // falta guardar en props secret, mail etc para meterlo en el objeto de userlogin
+                }else{
+                    emailVerification({email});
+                    createUser({data_points}, this.handleNext);
+                }
             break;
             default:
-
         }
     }
 
     renderContent() {
         const {finished, stepIndex} = this.state;
-        const contentStyle = {margin: '0 16px', overflow: 'hidden'};
 
         if (finished) {
             return (
-                <div style={contentStyle}>
+                <div>
                     <p>
                         <a href="#" onClick={(event) => {
                                 event.preventDefault();
@@ -220,6 +252,8 @@ class SignupForm extends React.Component {
       }
 
     render() {
+        console.log(this.state);
+        console.log(this.props);
         const {loading, stepIndex} = this.state;
 
         return (
