@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {
-    Step,
-    Stepper,
-    StepLabel,
-} from 'material-ui/Stepper';
+import {Step, Stepper, StepLabel} from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
@@ -37,19 +33,23 @@ const StepperBody = ({header, information, loading, error}) => {
     );
 }
 
-class SignupForm extends React.Component {
+const initialState = {
+    loading: false,
+    finished: false,
+    stepIndex: 0,
+    country_code: '',
+    phone_number: '',
+    secret: '',
+    email: '',
+    user_id: '',
+    user_token: '',
+};
 
-    state = {
-        loading: false,
-        finished: false,
-        stepIndex: 0,
-        country_code: '',
-        phone_number: '',
-        secret: '',
-        email: '',
-        user_id: '',
-        user_token: '',
-    };
+class SignupForm extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = initialState;
+    }
 
     componentWillReceiveProps(nextProps){
         if(!isEmptyObject(nextProps.userData)){
@@ -179,15 +179,16 @@ class SignupForm extends React.Component {
 
         if (finished) {
             return (
-                <div>
+                <div className="alert alert-success">
+                    <h4>User created successfully</h4>
                     <p>
                         <a href="#" onClick={(event) => {
                                 event.preventDefault();
-                                this.setState({stepIndex: 0, finished: false});
+                                this.setState(initialState);
                             }}
                         >
-                        User create successfully
-                    </a> Click to reset the example.
+                        Click here to reset the example.
+                        </a>
                     </p>
                 </div>
             );
