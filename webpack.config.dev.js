@@ -17,6 +17,9 @@ export default {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ],
+    resolve: {
+        extensions: ['', '.js', '.jsx', '.es6']
+    },
     module: {
         loaders: [
             {
@@ -24,26 +27,26 @@ export default {
                 loaders: ['style', 'css', 'sass']
             },
             {
-                test: /\.js$/,
+                test: /\.js|.jsx?$/,
                 include: [
                     path.join(__dirname, 'client'),
-                    path.join(__dirname, 'server/shared')
+                    path.join(__dirname, 'server')
                 ],
+                exclude: /(node_modules)/,
                 loaders: [ 'react-hot', 'babel-loader' ]
             }
         ],
-        rules: [{
-            test: /\.scss$/,
-            use: [{
-                loader: "style-loader" // creates style nodes from JS strings
-            }, {
-                loader: "css-loader" // translates CSS into CommonJS
-            }, {
-                loader: "sass-loader" // compiles Sass to CSS
-            }]
-        }]
-    },
-    resolve: {
-        extentions: [ '', '.js' ]
+        rules: [
+            {
+                test: /\.scss$/,
+                use: [{
+                    loader: "style-loader" // creates style nodes from JS strings
+                }, {
+                    loader: "css-loader" // translates CSS into CommonJS
+                }, {
+                    loader: "sass-loader" // compiles Sass to CSS
+                }]
+            }
+        ]
     }
 }

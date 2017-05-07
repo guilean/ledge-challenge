@@ -1,0 +1,65 @@
+// Colors variables
+$black: #000000;
+$white: #ffffff;
+$grey:#54585a;
+$transparent: rgba(0, 0, 0, 0);
+$fullBlack: rgba(0, 0, 0, 1);
+$darkBlack: rgba(0, 0, 0, 0.87);
+$lightBlack: rgba(0, 0, 0, 0.54);
+$minBlack: rgba(0, 0, 0, 0.26);
+$faintBlack: rgba(0, 0, 0, 0.12);
+$fullWhite: rgba(255, 255, 255, 1);
+$darkWhite: rgba(255, 255, 255, 0.87);
+$lightWhite: rgba(255, 255, 255, 0.54);
+$fm_black: #212121;
+$fm_grey1:#CCCCCC;//hints
+$fm_grey2:#636363;
+$fm_grey3:#8D8D8D;
+$fm_grey4: #f8f8f8;
+$fm_grey5: #d8d8d8;
+$fm_blue: #216DB3;
+$fm_icon: #A2B2C0;//#
+$fm_background: #f0f0f0;
+$fm_icon_disabled: #bac6d0;
+$fm_primary:#ed8b00;
+$fm_red: #f04540;
+$fm_orange: #ed8b00;
+$fm_green: #90a700;
+$border:#ddd;
+$green_completed: #87BB2D;
+$turquoise: #02A88D;
+$pending_button: #B59722;
+$disabled: #ddd;
+$hint_text: #bbb;
+
+// Fonts variables
+$fontFamily: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$fontLight: 300;
+$fontRegular: 400;
+$fontMedium: 500;
+
+$fontSizeXss: 10px;
+$fontSizeXs: 11px;
+$fontSizeMd: 13px;
+$fontSizeLg: 16px;
+$fontSizeXl: 18px;
+$fontSizeXxl: 20px;
+
+$letterSpacing: 0.5px;
+
+// Mixins
+@mixin defaultText() {
+    font-family: $fontFamily !important;
+    letter-spacing: $letterSpacing;
+    font-size: $fontSizeXs !important;
+}
+
+@mixin stepper() {
+    overflow: hidden !important;
+    padding: 25px !important;
+    width: 300px !important;
+    background-color: $white !important;
+    box-shadow: inset 0 0 1px 0px #afb0b0 !important;
+    font-size: $fontSizeXs !important;
+}
