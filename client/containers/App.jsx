@@ -1,6 +1,5 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import PropTypes from 'prop-types';
 
 class App extends React.Component {
     render() {
