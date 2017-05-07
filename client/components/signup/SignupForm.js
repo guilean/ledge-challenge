@@ -16,7 +16,7 @@ import IconButton from 'material-ui/IconButton';
 import {cyan500, cyan600} from 'material-ui/styles/colors';
 import ReactPhoneInput from 'react-phone-input';
 import styles from '../../sass/styles.scss';
-import {formatPhone, formatCountryCode, parseSecret, formatLoginParams, formatUserParams} from '../../utils/UtilsFormat';
+import {formatPhone, formatCountryCode, parseSecret, formatLoginParams, formatUserParams, isEmptyObject} from '../../utils/UtilsFormat';
 
 const ResendCode = ({onClick}) => {
     return (
@@ -47,7 +47,15 @@ class SignupForm extends React.Component {
         phone_number: '',
         secret: '',
         email: '',
+        user_id: '',
+        user_token: '',
     };
+
+    componentWillReceiveProps(nextProps){
+        if(!isEmptyObject(nextProps.userData)){
+            this.setState({user_id:nextProps.userData.user_id, user_token: nextProps.userData.user_token})
+        }
+    }
 
     handleOnChange = (value) => {
         let country_code = formatCountryCode(value);
@@ -203,16 +211,29 @@ class SignupForm extends React.Component {
                 </div>
             </div>
         );
-      }
+    }
+
+    userLogged = () => {
+        const {user_id, user_token} = this.state;
+        return (
+            <div className="alert alert-success">
+                <h4>Yey! You have been logged in successfully!</h4>
+                <p><b>user_id: </b><span className="text-wrap">{user_id}</span></p>
+                <p><b>user_token: </b><span className="text-wrap">{user_token}</span></p>
+            </div>
+        );
+    }
 
     render() {
-        const {loading, stepIndex} = this.state;
+        const {loading, stepIndex, user_id} = this.state;
+        let renderContent = user_id !== '' ? this.userLogged() :
+            <ExpandTransition loading={loading} open={true}>
+                {this.renderContent()}
+            </ExpandTransition>
 
         return (
             <div className="wrapper-ui">
-                <ExpandTransition loading={loading} open={true}>
-                    {this.renderContent()}
-                </ExpandTransition>
+                {renderContent}
             </div>
         );
     }

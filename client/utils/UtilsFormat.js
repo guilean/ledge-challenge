@@ -59,3 +59,7 @@ export function formatLoginParams(email_registered, phone_number, secret, verifi
         }
     }
 }
+
+export function isEmptyObject(obj) {
+    return Object.keys(obj).length === 0
+}

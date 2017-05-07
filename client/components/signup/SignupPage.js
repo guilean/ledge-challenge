@@ -7,7 +7,7 @@ import * as actions from '../../actions/config';
 class SignupPage extends React.Component {
 
     render() {
-        const {phone_verification, phone_verification_finish, email_verification, email_verification_status, verification_id_email, verification_id_phone, phoneVerification_loading, phoneVerification_error, new_user, alternate_credentials, login} = this.props;
+        const {phone_verification, userData, phone_verification_finish, email_verification, email_verification_status, verification_id_email, verification_id_phone, phoneVerification_loading, phoneVerification_error, new_user, alternate_credentials, login} = this.props;
 
         return (
             <div className="wrapper">
@@ -24,6 +24,7 @@ class SignupPage extends React.Component {
                         createUser={new_user}
                         isRegistered={alternate_credentials}
                         login={login}
+                        userData={userData}
                     />
                 </div>
             </div>
@@ -45,6 +46,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state, ownProps) {
     const {status, alternate_credentials} = state.config.phoneVerification;
+    const {userData} = state.config;
     const {type} = state.config.emailVerification;
     const {phoneVerification_loading, phoneVerification_error} = state.config;
     return {
@@ -53,7 +55,8 @@ function mapStateToProps(state, ownProps) {
         status,
         phoneVerification_loading,
         phoneVerification_error,
-        alternate_credentials
+        alternate_credentials,
+        userData
     }
 }
 
