@@ -1,2 +1,2 @@
-# ledge-challenge
+# Ledge authentication system
 Authentication system
