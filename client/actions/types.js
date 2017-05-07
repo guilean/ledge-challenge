@@ -6,4 +6,3 @@ export const NEW_USER = 'NEW_USER';
 export const USER_LOGIN = 'USER_LOGIN';
 export const LOADING = 'LOADING';
 export const ERROR = 'ERROR';
-export const LOAD_CONFIG_ERROR = 'LOAD_CONFIG_ERROR';

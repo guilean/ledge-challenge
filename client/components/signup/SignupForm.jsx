@@ -1,37 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {Step, Stepper, StepLabel} from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import TextField from 'material-ui/TextField';
-import CircularProgress from 'material-ui/CircularProgress';
-import FontIcon from 'material-ui/FontIcon';
-import IconButton from 'material-ui/IconButton';
-import {cyan500, cyan600} from 'material-ui/styles/colors';
 import ReactPhoneInput from 'react-phone-input';
 import styles from '../../sass/styles.scss';
 import {formatPhone, formatCountryCode, parseSecret, formatLoginParams, formatUserParams, isEmptyObject} from '../../utils/UtilsFormat';
-
-const ResendCode = ({onClick}) => {
-    return (
-        <IconButton tooltip="Resend code" tooltipPosition="top-center">
-            <FontIcon onClick={onClick} className="material-icons resend-code" hoverColor={cyan600} color={cyan500}>refresh</FontIcon>
-        </IconButton>
-    );
-}
-
-const StepperBody = ({header, information, loading, error}) => {
-    return (
-        <div className="stepper-panel">
-            <h4 className="title-stepper">{header}</h4>
-            {loading && <CircularProgress className="spinner" size={20}/>}
-            {error && <p className="alert alert-danger">An error occurred.</p>}
-            <p>{information}</p>
-        </div>
-    );
-}
+import {ResendCode, StepperBody, LastStep} from '../common/general';
 
 const initialState = {
     loading: false,
@@ -179,18 +156,7 @@ class SignupForm extends React.Component {
 
         if (finished) {
             return (
-                <div className="alert alert-success">
-                    <h4>User created successfully</h4>
-                    <p>
-                        <a href="#" onClick={(event) => {
-                                event.preventDefault();
-                                this.setState(initialState);
-                            }}
-                        >
-                        Click here to reset the example.
-                        </a>
-                    </p>
-                </div>
+                <LastStep header='User created successfully' body='Click here to reset the example.' reset={initialState} context={this} />
             );
         }
 

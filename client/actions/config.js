@@ -83,10 +83,15 @@ export function phone_verification_finish(params, callback) {
         Context.domainManager.phone_verification_finish(params,
             (success) =>{
                 dispatch(_phoneVerificationFinish(success));
-                if(success.status === 'passed' && success.alternate_credentials === null){
+                let {alternate_credentials} = success;
+                let email_credential;
+                if(alternate_credentials){
+                    email_credential = success.alternate_credentials.data[0].credential;
+                }
+                if(success.status === 'passed' && alternate_credentials === null){
                     callback();
-                }else if(success.alternate_credentials.data[0].credential && success.alternate_credentials.data[0].credential !== ""){
-                    dispatch(email_verification({email:success.alternate_credentials.data[0].credential}, callback));
+                }else if(email_credential && email_credential !== ''){
+                    dispatch(email_verification({email:email_credential}, callback));
                 }else{
                     dispatch(_showError());
                 }
