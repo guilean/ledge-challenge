@@ -5,6 +5,11 @@ Authentication system
 ```
 npm install
 ```
+### Troubleshooting
+In case of ERROR in ENOENT: no such file or directory, scandir node-sass/vendor execute next command.
+```
+npm rebuild node-sass
+```
 ## Built With
 
 * [React](https://github.com/facebook/react) - React is a JavaScript library for building user interfaces
