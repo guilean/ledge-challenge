@@ -7,7 +7,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from './reducers/rootReducer';
 import routes from './routes';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import Context from './Config';
 
 injectTapEventPlugin();
 

@@ -1,6 +1,5 @@
 import express from 'express';
 import path from 'path';
-import http from 'http';
 import bodyParser from 'body-parser';
 
 import webpack from 'webpack';
